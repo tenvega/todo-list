@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const session = require('express-session')
 const expressValidator = require('express-validator')
 const app = express();
-const doneArray = [];
+
 
 app.engine('handlebars', handlebars());
 app.set('views', './views');
