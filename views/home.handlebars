@@ -12,7 +12,7 @@
 <article class="log">
   <ul>
     {{#todoLog}}
-      <li><a href="/del/{{@index}}"><button type="button" name="button">Mark Complete</button></a> {{todo}}</li>
+      <li><a href="/del/{{@index}}"><button type="button" name="button">Mark Complete</button></a> {{.}}</li>
     {{/todoLog}}
   </ul>
 </article>
@@ -20,11 +20,17 @@
 
  <form action="/enterTodo" method="post">
     <br>
-    <div><input type="text" value="{{taskField.todo}}" name="todo" placeholder="Add a todo" /></div>
+    <div><input type="text" value="{{taskField.todo}}" name="todo" placeholder="to do" /></div>
     <br>
    <button>Add a to do!</button>
   </form>
-
+<div>
+<ul>
+  {{#doneLog}}
+    <li>{{.}}</li>
+  {{/doneLog}}
+</ul>
+</div>
 
 </body>
 

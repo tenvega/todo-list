@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const session = require('express-session')
 const expressValidator = require('express-validator')
 const app = express();
+let comp = [];
 
 
 app.engine('handlebars', handlebars());
@@ -32,8 +33,11 @@ app.use(session({
 app.use(morgan('dev'));
 
 app.use((req, res, next) => {
-  if (!req.session.bookList) {
-    req.session.bookList = [];
+  if (!req.session.doneList) {
+    req.session.doneList = []
+  }
+  if (!req.session.todoList) {
+    req.session.todoList = [];
 
   }
 
@@ -42,56 +46,43 @@ app.use((req, res, next) => {
 
 })
 
+
 app.get('/', function(req, res) {
-  if (req.session.bookList.length === 0) {
-    res.render('home')
 
-  } else {
     res.render('home', {
-      todoLog: req.session.bookList
-
+      todoLog: req.session.todoList,
+      doneLog: req.session.doneList
     });
-   }
- });
-
- app.get('/', function(req, res) {
-   res.render('home');
- });
+});
 
 
 
- app.post('/enterTodo', function(req, res) {
-   let todo = req.body;
-
+app.post('/enterTodo', function(req, res) {
+   let todo = req.body.todo;
+   console.log(todo)
    req.checkBody('todo').notEmpty();
-
    let items = req.validationErrors();
-
    if (items) {
      res.render('home', {
 
-       taskField: todo
 
-    });
+  });
 
  } else {
 
-     req.session.bookList.push(todo);
+     req.session.todoList.push(todo);
      res.redirect('/');
-
    }
 
- })
+})
 
 
  app.get('/del/:index', function(req, res) {
-   req.session.bookList.splice(req.params.index, 1);
-   res.redirect('/');
+  let done = req.session.todoList.splice(req.params.index, 1);
+  req.session.doneList.push(done)
+  console.log(comp)
+  res.redirect('/');
  })
-
-
-
-
 
 
  app.listen(3000, function() {
